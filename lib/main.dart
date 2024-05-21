@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const App());
@@ -25,33 +26,42 @@ class _Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 400),
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: const SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('🔗Links'),
-              SizedBox(height: 32),
-              _Button(
-                title: 'X',
-                url: 'https://github.com/IdiomaticBytes',
-                autofocus: true,
-              ),
-              SizedBox(height: 32),
-              _Button(
-                title: 'GitHub',
-                url: 'https://github.com/CillianMyles',
-              ),
-              SizedBox(height: 32),
-              _Button(
-                title: 'LinkedIn',
-                url: 'https://www.linkedin.com/in/cillianmyles',
-              ),
-            ],
+    return Shortcuts(
+      shortcuts: {
+        // Web uses arrows for scrolling by default
+        LogicalKeySet(LogicalKeyboardKey.arrowUp):
+            const DirectionalFocusIntent(TraversalDirection.up),
+        LogicalKeySet(LogicalKeyboardKey.arrowDown):
+            const DirectionalFocusIntent(TraversalDirection.down),
+      },
+      child: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: const SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('🔗Links'),
+                SizedBox(height: 32),
+                _Button(
+                  title: 'X',
+                  url: 'https://github.com/IdiomaticBytes',
+                  autofocus: true,
+                ),
+                SizedBox(height: 32),
+                _Button(
+                  title: 'GitHub',
+                  url: 'https://github.com/CillianMyles',
+                ),
+                SizedBox(height: 32),
+                _Button(
+                  title: 'LinkedIn',
+                  url: 'https://www.linkedin.com/in/cillianmyles',
+                ),
+              ],
+            ),
           ),
         ),
       ),
