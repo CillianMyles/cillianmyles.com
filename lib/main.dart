@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(const App());
@@ -11,49 +10,49 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '🔗Links',
+      title: "Cillian Myles' Links 🔗",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         useMaterial3: true,
       ),
-      home: const Page(),
+      home: const _Page(),
     );
   }
 }
 
-class Page extends StatelessWidget {
-  const Page({super.key});
+class _Page extends StatelessWidget {
+  const _Page();
 
   @override
   Widget build(BuildContext context) {
-    return const FocusScope(
-      autofocus: true,
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('🔗Links'),
-            SizedBox(height: 32),
-            _Button(
-              url: 'https://github.com/IdiomaticBytes',
-              debugLabel: 'X',
-              autofocus: true,
-              child: Text('X'),
-            ),
-            SizedBox(height: 32),
-            _Button(
-              url: 'https://github.com/CillianMyles',
-              debugLabel: 'GitHub',
-              child: Text('GitHub'),
-            ),
-            SizedBox(height: 32),
-            _Button(
-              url: 'https://www.linkedin.com/in/cillianmyles',
-              debugLabel: 'LinkedIn',
-              child: Text('LinkedIn'),
-            ),
-          ],
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 400),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: const SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('🔗Links'),
+              SizedBox(height: 32),
+              _Button(
+                title: 'X',
+                url: 'https://github.com/IdiomaticBytes',
+                autofocus: true,
+              ),
+              SizedBox(height: 32),
+              _Button(
+                title: 'GitHub',
+                url: 'https://github.com/CillianMyles',
+              ),
+              SizedBox(height: 32),
+              _Button(
+                title: 'LinkedIn',
+                url: 'https://www.linkedin.com/in/cillianmyles',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -62,15 +61,13 @@ class Page extends StatelessWidget {
 
 class _Button extends StatefulWidget {
   const _Button({
-    required this.child,
+    required this.title,
     required this.url,
-    required this.debugLabel,
     this.autofocus = false,
   });
 
-  final Widget child;
+  final String title;
   final String url;
-  final String debugLabel;
   final bool autofocus;
 
   @override
@@ -78,13 +75,13 @@ class _Button extends StatefulWidget {
 }
 
 class _ButtonState extends State<_Button> {
-  var _hovered = false;
   late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode(debugLabel: widget.debugLabel)..requestFocus();
+    _focusNode = FocusNode(debugLabel: widget.title);
+    if (widget.autofocus) _focusNode.requestFocus();
   }
 
   @override
@@ -93,50 +90,24 @@ class _ButtonState extends State<_Button> {
     super.dispose();
   }
 
-  void _onEnter(PointerEnterEvent event) {
-    if (!_hovered) {
-      setState(() {
-        _hovered = true;
-      });
-    }
-  }
-
-  void _onExit(PointerExitEvent event) {
-    if (_hovered) {
-      setState(() {
-        _hovered = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FocusableActionDetector(
-      focusNode: _focusNode,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: _onEnter,
-        onExit: _onExit,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(12),
-            color: _focusNode.hasFocus || _hovered
-                ? Theme.of(context).colorScheme.surface
-                : Theme.of(context).colorScheme.surface.withOpacity(0.1),
+    return Material(
+      type: MaterialType.card,
+      elevation: 4,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
+      child: ListTile(
+        focusNode: _focusNode,
+        onTap: () {},
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontSize: 24,
+            color: Theme.of(context).colorScheme.primary,
           ),
-          padding: const EdgeInsets.all(8),
-          child: DefaultTextStyle(
-            style: TextStyle(
-              fontSize: 24,
-              color: Theme.of(context).colorScheme.primary,
-              overflow: TextOverflow.ellipsis,
-            ),
-            child: widget.child,
-          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
