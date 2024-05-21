@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const App());
@@ -38,27 +39,27 @@ class _Page extends StatelessWidget {
         child: Container(
           constraints: const BoxConstraints(maxWidth: 400),
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: const SingleChildScrollView(
+          child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('🔗Links'),
-                SizedBox(height: 32),
+                const Text('🔗Links'),
+                const SizedBox(height: 32),
                 _Button(
                   title: 'X',
-                  url: 'https://github.com/IdiomaticBytes',
+                  url: Uri.parse('https://x.com/IdiomaticBytes'),
                   autofocus: true,
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 _Button(
                   title: 'GitHub',
-                  url: 'https://github.com/CillianMyles',
+                  url: Uri.parse('https://github.com/CillianMyles'),
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 _Button(
                   title: 'LinkedIn',
-                  url: 'https://www.linkedin.com/in/cillianmyles',
+                  url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
                 ),
               ],
             ),
@@ -77,7 +78,7 @@ class _Button extends StatefulWidget {
   });
 
   final String title;
-  final String url;
+  final Uri url;
   final bool autofocus;
 
   @override
@@ -100,6 +101,16 @@ class _ButtonState extends State<_Button> {
     super.dispose();
   }
 
+  Future<void> _launchUrl() async {
+    final succeeded = await launchUrl(
+      widget.url,
+      webOnlyWindowName: '_blank',
+    );
+    if (!succeeded) {
+      throw Exception('Could not launch ${widget.url}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -109,7 +120,7 @@ class _ButtonState extends State<_Button> {
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         focusNode: _focusNode,
-        onTap: () {},
+        onTap: _launchUrl,
         title: Text(
           widget.title,
           style: TextStyle(
