@@ -35,16 +35,25 @@ class _Page extends StatelessWidget {
         LogicalKeySet(LogicalKeyboardKey.arrowDown):
             const DirectionalFocusIntent(TraversalDirection.down),
       },
-      child: Center(
+      child: Align(
+        alignment: Alignment.topCenter,
         child: Container(
           constraints: const BoxConstraints(maxWidth: 400),
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('🔗Links'),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(64),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  margin: const EdgeInsets.all(32),
+                  child: Image.asset('assets/images/cillian.jpg'),
+                ),
                 const SizedBox(height: 32),
                 _Button(
                   title: 'X',
