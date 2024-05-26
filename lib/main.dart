@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -65,17 +66,20 @@ class _Page extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   _Button(
-                    title: 'X',
+                    icon: const FaIcon(FontAwesomeIcons.xTwitter),
+                    title: 'Twitter',
                     url: Uri.parse('https://x.com/IdiomaticBytes'),
                     autofocus: true,
                   ),
                   const SizedBox(height: 32),
                   _Button(
+                    icon: const FaIcon(FontAwesomeIcons.github),
                     title: 'GitHub',
                     url: Uri.parse('https://github.com/CillianMyles'),
                   ),
                   const SizedBox(height: 32),
                   _Button(
+                    icon: const FaIcon(FontAwesomeIcons.linkedin),
                     title: 'LinkedIn',
                     url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
                   ),
@@ -92,11 +96,13 @@ class _Page extends StatelessWidget {
 
 class _Button extends StatefulWidget {
   const _Button({
+    required this.icon,
     required this.title,
     required this.url,
     this.autofocus = false,
   });
 
+  final Widget icon;
   final String title;
   final Uri url;
   final bool autofocus;
@@ -141,6 +147,7 @@ class _ButtonState extends State<_Button> {
       child: ListTile(
         focusNode: _focusNode,
         onTap: _launchUrl,
+        leading: widget.icon,
         title: Text(
           widget.title,
           style: TextStyle(
