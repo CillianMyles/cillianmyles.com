@@ -45,12 +45,12 @@ class _Page extends StatelessWidget {
           LogicalKeySet(LogicalKeyboardKey.arrowDown):
               const DirectionalFocusIntent(TraversalDirection.down),
         },
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 400),
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
