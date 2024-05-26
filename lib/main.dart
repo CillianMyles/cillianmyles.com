@@ -76,6 +76,12 @@ class _Page extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   _Button(
+                    icon: const FaIcon(FontAwesomeIcons.lightbulb),
+                    title: 'Blog',
+                    url: Uri.parse('https://idiomaticbytes.com'),
+                  ),
+                  const SizedBox(height: 32),
+                  _Button(
                     icon: const FaIcon(FontAwesomeIcons.xTwitter),
                     title: 'Twitter',
                     url: Uri.parse('https://x.com/IdiomaticBytes'),
