@@ -56,13 +56,15 @@ class _Page extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
+                  Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Material(
+                      type: MaterialType.card,
                       borderRadius: BorderRadius.circular(9999),
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 16,
+                      child: Image.asset('assets/images/cillian.jpg'),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: const EdgeInsets.all(32),
-                    child: Image.asset('assets/images/cillian.jpg'),
                   ),
                   const SizedBox(height: 32),
                   _Button(
