@@ -67,6 +67,13 @@ class _Page extends StatelessWidget {
                       child: Image.asset('assets/images/cillian.jpg'),
                     ),
                   ),
+                  Text(
+                    'Dad. Thinker. Engineer. \n'
+                    'Building the future of productivity @Superlist ⚡️ \n'
+                    'Also writing about building amazing software experiences with Flutter and Dart! ✨',
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 32),
                   _Button(
                     icon: const FaIcon(FontAwesomeIcons.xTwitter),
