@@ -68,8 +68,8 @@ class _Page extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Dad. Thinker. Engineer. \n'
-                    'Building the future of productivity at Superlist ⚡️ \n'
+                    'Dad. Thinker. Engineer.\n'
+                    'Building the future of productivity at Superlist ⚡️\n'
                     'Writing about building amazing software experiences with Flutter and Dart! ✨',
                     style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.center,
