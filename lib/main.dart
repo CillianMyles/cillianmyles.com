@@ -16,6 +16,7 @@ class App extends StatelessWidget {
       title: "Cillian Myles",
       theme: _themeData(Brightness.light),
       darkTheme: _themeData(Brightness.dark),
+      debugShowCheckedModeBanner: false,
       home: const _Page(),
     );
   }
