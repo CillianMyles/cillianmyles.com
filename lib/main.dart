@@ -94,7 +94,7 @@ class _Page extends StatelessWidget {
   }
 }
 
-class _Button extends StatefulWidget {
+class _Button extends StatelessWidget {
   const _Button({
     required this.icon,
     required this.title,
@@ -107,33 +107,13 @@ class _Button extends StatefulWidget {
   final Uri url;
   final bool autofocus;
 
-  @override
-  State<_Button> createState() => _ButtonState();
-}
-
-class _ButtonState extends State<_Button> {
-  late final FocusNode _focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode(debugLabel: widget.title);
-    if (widget.autofocus) _focusNode.requestFocus();
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
   Future<void> _launchUrl() async {
     final succeeded = await launchUrl(
-      widget.url,
+      url,
       webOnlyWindowName: '_blank',
     );
     if (!succeeded) {
-      throw Exception('Could not launch ${widget.url}');
+      throw Exception('Could not launch $url');
     }
   }
 
@@ -145,11 +125,11 @@ class _ButtonState extends State<_Button> {
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
       child: ListTile(
-        focusNode: _focusNode,
+        autofocus: autofocus,
         onTap: _launchUrl,
-        leading: widget.icon,
+        leading: icon,
         title: Text(
-          widget.title,
+          title,
           style: TextStyle(
             fontSize: 24,
             color: Theme.of(context).colorScheme.primary,
