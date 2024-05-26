@@ -57,7 +57,7 @@ class _Page extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(64),
+                      borderRadius: BorderRadius.circular(9999),
                     ),
                     clipBehavior: Clip.antiAlias,
                     margin: const EdgeInsets.all(32),
