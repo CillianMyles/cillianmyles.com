@@ -13,13 +13,21 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Cillian Myles",
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        useMaterial3: true,
-      ),
+      theme: _themeData(Brightness.light),
+      darkTheme: _themeData(Brightness.dark),
       home: const _Page(),
     );
   }
+}
+
+ThemeData _themeData(Brightness brightness) {
+  return ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.grey,
+      brightness: brightness,
+    ),
+    useMaterial3: true,
+  );
 }
 
 class _Page extends StatelessWidget {
@@ -27,50 +35,52 @@ class _Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shortcuts(
-      shortcuts: {
-        // Web uses arrows for scrolling by default
-        LogicalKeySet(LogicalKeyboardKey.arrowUp):
-            const DirectionalFocusIntent(TraversalDirection.up),
-        LogicalKeySet(LogicalKeyboardKey.arrowDown):
-            const DirectionalFocusIntent(TraversalDirection.down),
-      },
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(64),
+    return Scaffold(
+      body: Shortcuts(
+        shortcuts: {
+          // Web uses arrows for scrolling by default
+          LogicalKeySet(LogicalKeyboardKey.arrowUp):
+              const DirectionalFocusIntent(TraversalDirection.up),
+          LogicalKeySet(LogicalKeyboardKey.arrowDown):
+              const DirectionalFocusIntent(TraversalDirection.down),
+        },
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 400),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(64),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    margin: const EdgeInsets.all(32),
+                    child: Image.asset('assets/images/cillian.jpg'),
                   ),
-                  clipBehavior: Clip.antiAlias,
-                  margin: const EdgeInsets.all(32),
-                  child: Image.asset('assets/images/cillian.jpg'),
-                ),
-                const SizedBox(height: 32),
-                _Button(
-                  title: 'X',
-                  url: Uri.parse('https://x.com/IdiomaticBytes'),
-                  autofocus: true,
-                ),
-                const SizedBox(height: 32),
-                _Button(
-                  title: 'GitHub',
-                  url: Uri.parse('https://github.com/CillianMyles'),
-                ),
-                const SizedBox(height: 32),
-                _Button(
-                  title: 'LinkedIn',
-                  url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
-                ),
-              ],
+                  const SizedBox(height: 32),
+                  _Button(
+                    title: 'X',
+                    url: Uri.parse('https://x.com/IdiomaticBytes'),
+                    autofocus: true,
+                  ),
+                  const SizedBox(height: 32),
+                  _Button(
+                    title: 'GitHub',
+                    url: Uri.parse('https://github.com/CillianMyles'),
+                  ),
+                  const SizedBox(height: 32),
+                  _Button(
+                    title: 'LinkedIn',
+                    url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
