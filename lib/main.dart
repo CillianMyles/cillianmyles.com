@@ -85,7 +85,6 @@ class _Page extends StatelessWidget {
                     icon: const FaIcon(FontAwesomeIcons.xTwitter),
                     title: 'Twitter',
                     url: Uri.parse('https://x.com/IdiomaticBytes'),
-                    autofocus: true,
                   ),
                   const SizedBox(height: 32),
                   _Button(
