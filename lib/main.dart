@@ -79,6 +79,7 @@ class _Page extends StatelessWidget {
                     title: 'LinkedIn',
                     url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
                   ),
+                  const SizedBox(height: 128),
                 ],
               ),
             ),
