@@ -32,21 +32,50 @@ ThemeData _themeData(Brightness brightness) {
   );
 }
 
-class _Page extends StatelessWidget {
+class _Page extends StatefulWidget {
   const _Page();
 
   @override
+  State<_Page> createState() => _PageState();
+}
+
+class _PageState extends State<_Page> {
+  final _focusNode1 = FocusNode(debugLabel: '1');
+  final _focusNode2 = FocusNode(debugLabel: '2');
+  final _focusNode3 = FocusNode(debugLabel: '3');
+  final _focusNode4 = FocusNode(debugLabel: '4');
+
+  @override
+  void dispose() {
+    _focusNode1.dispose();
+    _focusNode2.dispose();
+    _focusNode3.dispose();
+    _focusNode4.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Shortcuts(
-        shortcuts: {
-          // Web uses arrows for scrolling by default
-          LogicalKeySet(LogicalKeyboardKey.arrowUp):
-              const DirectionalFocusIntent(TraversalDirection.up),
-          LogicalKeySet(LogicalKeyboardKey.arrowDown):
-              const DirectionalFocusIntent(TraversalDirection.down),
-        },
-        child: SingleChildScrollView(
+    return FocusableActionDetector(
+      autofocus: true,
+      shortcuts: <ShortcutActivator, Intent>{
+        // Web uses arrows for scrolling by default
+        const SingleActivator(LogicalKeyboardKey.arrowUp):
+            const DirectionalFocusIntent(TraversalDirection.up),
+        const SingleActivator(LogicalKeyboardKey.arrowDown):
+            const DirectionalFocusIntent(TraversalDirection.down),
+        // Tile shortcuts
+        const SingleActivator(LogicalKeyboardKey.keyA):
+            RequestFocusIntent(_focusNode1),
+        const SingleActivator(LogicalKeyboardKey.keyB):
+            RequestFocusIntent(_focusNode2),
+        const SingleActivator(LogicalKeyboardKey.keyC):
+            RequestFocusIntent(_focusNode3),
+        const SingleActivator(LogicalKeyboardKey.keyD):
+            RequestFocusIntent(_focusNode4),
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
           child: Align(
             alignment: Alignment.topCenter,
             child: Container(
@@ -75,28 +104,32 @@ class _Page extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  _Button(
+                  _Tile(
                     icon: const FaIcon(FontAwesomeIcons.lightbulb),
                     title: 'Blog',
                     url: Uri.parse('https://idiomaticbytes.com'),
+                    focusNode: _focusNode1,
                   ),
                   const SizedBox(height: 32),
-                  _Button(
+                  _Tile(
                     icon: const FaIcon(FontAwesomeIcons.xTwitter),
                     title: 'Twitter',
                     url: Uri.parse('https://x.com/IdiomaticBytes'),
+                    focusNode: _focusNode2,
                   ),
                   const SizedBox(height: 32),
-                  _Button(
+                  _Tile(
                     icon: const FaIcon(FontAwesomeIcons.github),
                     title: 'GitHub',
                     url: Uri.parse('https://github.com/CillianMyles'),
+                    focusNode: _focusNode3,
                   ),
                   const SizedBox(height: 32),
-                  _Button(
+                  _Tile(
                     icon: const FaIcon(FontAwesomeIcons.linkedin),
                     title: 'LinkedIn',
                     url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
+                    focusNode: _focusNode4,
                   ),
                   const SizedBox(height: 128),
                 ],
@@ -109,17 +142,19 @@ class _Page extends StatelessWidget {
   }
 }
 
-class _Button extends StatelessWidget {
-  const _Button({
+class _Tile extends StatelessWidget {
+  const _Tile({
     required this.icon,
     required this.title,
     required this.url,
+    required this.focusNode,
     this.autofocus = false,
   });
 
   final Widget icon;
   final String title;
   final Uri url;
+  final FocusNode focusNode;
   final bool autofocus;
 
   Future<void> _launchUrl() async {
@@ -134,25 +169,62 @@ class _Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final desktop = MediaQuery.sizeOf(context).width >= 600;
+
+    final tile = ListTile(
+      focusNode: focusNode,
+      autofocus: autofocus,
+      onTap: _launchUrl,
+      leading: icon,
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 24,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    final Widget result;
+
+    if (desktop) {
+      // result = Row(
+      //   mainAxisSize: MainAxisSize.max,
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   children: [
+      //     SizedBox(
+      //       width: 40,
+      //       child: ElevatedButton(
+      //         onPressed: () => _focusNode.requestFocus(),
+      //         child: Text(_keys[widget.activatorKey]!),
+      //       ),
+      //     ),
+      //     const SizedBox(width: 8),
+      //     tile,
+      //     const SizedBox(width: 8),
+      //     SizedBox(
+      //       width: 40,
+      //       child: ElevatedButton(
+      //         onPressed: _launchUrl,
+      //         child: const Text('⏎'),
+      //       ),
+      //     ),
+      //   ],
+      // );
+      result = tile;
+    } else {
+      result = tile;
+    }
+
     return Material(
       type: MaterialType.card,
       elevation: 4,
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
-      child: ListTile(
-        autofocus: autofocus,
-        onTap: _launchUrl,
-        leading: icon,
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: 24,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
+      child: result,
     );
   }
 }
