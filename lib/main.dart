@@ -230,3 +230,34 @@ class _Tile extends StatelessWidget {
     );
   }
 }
+
+class _Container extends StatelessWidget {
+  const _Container({
+    required this.child,
+    required this.borderRadius,
+    required this.elevation,
+  });
+
+  final Widget child;
+  final BorderRadius borderRadius;
+  final double elevation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: borderRadius,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, elevation / 2),
+            blurRadius: elevation,
+          ),
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: child,
+    );
+  }
+}
