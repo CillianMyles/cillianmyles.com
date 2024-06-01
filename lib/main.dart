@@ -211,14 +211,11 @@ class _TileState extends State<_Tile> {
     final Widget icon;
 
     if (desktop) {
-      icon = OutlinedButton(
-        onPressed: () => widget.focusData.node.requestFocus(),
-        child: Text(
-          widget.focusData.node.hasFocus ? '⏎' : widget.focusData.label,
-        ),
+      icon = _KeyButton(
+        label: widget.focusData.node.hasFocus ? '⏎' : widget.focusData.label,
       );
     } else {
-      icon = this.widget.icon;
+      icon = widget.icon;
     }
 
     final tile = ListTile(
@@ -242,6 +239,44 @@ class _TileState extends State<_Tile> {
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
       child: tile,
+    );
+  }
+}
+
+class _KeyButton extends StatelessWidget {
+  const _KeyButton({
+    required this.label,
+  });
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        border: Border.all(width: 1.0, color: Colors.grey[400]!),
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(2, 2),
+            blurRadius: 2,
+          ),
+        ],
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        label,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w500,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
     );
   }
 }
