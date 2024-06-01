@@ -40,17 +40,12 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  final _tiles = <_TileFocusData>[
-    _TileFocusData(label: 'B', key: LogicalKeyboardKey.keyB),
-    _TileFocusData(label: 'X', key: LogicalKeyboardKey.keyX),
-    _TileFocusData(label: 'G', key: LogicalKeyboardKey.keyG),
-    _TileFocusData(label: 'L', key: LogicalKeyboardKey.keyL),
-  ];
+  final _tiles = [_Tiles.blog, _Tiles.twitter, _Tiles.gitHub, _Tiles.linkedIn];
 
   @override
   void dispose() {
     for (final tile in _tiles) {
-      tile.focusNode.dispose();
+      tile.node.dispose();
     }
     super.dispose();
   }
@@ -67,7 +62,7 @@ class _PageState extends State<_Page> {
             const DirectionalFocusIntent(TraversalDirection.down),
         // Tile shortcuts
         for (final tile in _tiles)
-          SingleActivator(tile.key): RequestFocusIntent(tile.focusNode),
+          SingleActivator(tile.key): RequestFocusIntent(tile.node),
       },
       child: Scaffold(
         body: SingleChildScrollView(
@@ -137,15 +132,39 @@ class _PageState extends State<_Page> {
   }
 }
 
+class _Tiles {
+  const _Tiles._();
+
+  static final blog = _TileFocusData(
+    label: 'B',
+    key: LogicalKeyboardKey.keyB,
+  );
+
+  static final twitter = _TileFocusData(
+    label: 'X',
+    key: LogicalKeyboardKey.keyX,
+  );
+
+  static final gitHub = _TileFocusData(
+    label: 'G',
+    key: LogicalKeyboardKey.keyG,
+  );
+
+  static final linkedIn = _TileFocusData(
+    label: 'L',
+    key: LogicalKeyboardKey.keyL,
+  );
+}
+
 class _TileFocusData {
   _TileFocusData({
     required this.label,
     required this.key,
-  }) : focusNode = FocusNode(debugLabel: label);
+  }) : node = FocusNode(debugLabel: label);
 
   final String label;
   final LogicalKeyboardKey key;
-  final FocusNode focusNode;
+  final FocusNode node;
 }
 
 class _Tile extends StatelessWidget {
@@ -178,9 +197,9 @@ class _Tile extends StatelessWidget {
 
     if (desktop) {
       icon = OutlinedButton(
-        onPressed: () => focusData.focusNode.requestFocus(),
+        onPressed: () => focusData.node.requestFocus(),
         child: Text(
-          focusData.focusNode.hasFocus ? '⏎' : focusData.label,
+          focusData.node.hasFocus ? '⏎' : focusData.label,
         ),
       );
     } else {
@@ -188,7 +207,7 @@ class _Tile extends StatelessWidget {
     }
 
     final tile = ListTile(
-      focusNode: focusData.focusNode,
+      focusNode: focusData.node,
       onTap: _launchUrl,
       leading: icon,
       title: Text(
