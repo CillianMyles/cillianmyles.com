@@ -167,7 +167,7 @@ class _TileFocusData {
   final FocusNode node;
 }
 
-class _Tile extends StatelessWidget {
+class _Tile extends StatefulWidget {
   const _Tile({
     required this.icon,
     required this.title,
@@ -180,13 +180,28 @@ class _Tile extends StatelessWidget {
   final Uri url;
   final _TileFocusData focusData;
 
+  @override
+  State<_Tile> createState() => _TileState();
+}
+
+class _TileState extends State<_Tile> {
+  @override
+  void initState() {
+    super.initState();
+    widget.focusData.node.addListener(_onFocusChanged);
+  }
+
+  void _onFocusChanged() {
+    setState(() {});
+  }
+
   Future<void> _launchUrl() async {
     final succeeded = await launchUrl(
-      url,
+      widget.url,
       webOnlyWindowName: '_blank',
     );
     if (!succeeded) {
-      throw Exception('Could not launch $url');
+      throw Exception('Could not launch ${widget.url}');
     }
   }
 
@@ -197,21 +212,21 @@ class _Tile extends StatelessWidget {
 
     if (desktop) {
       icon = OutlinedButton(
-        onPressed: () => focusData.node.requestFocus(),
+        onPressed: () => widget.focusData.node.requestFocus(),
         child: Text(
-          focusData.node.hasFocus ? '⏎' : focusData.label,
+          widget.focusData.node.hasFocus ? '⏎' : widget.focusData.label,
         ),
       );
     } else {
-      icon = this.icon;
+      icon = this.widget.icon;
     }
 
     final tile = ListTile(
-      focusNode: focusData.node,
+      focusNode: widget.focusData.node,
       onTap: _launchUrl,
       leading: icon,
       title: Text(
-        title,
+        widget.title,
         style: TextStyle(
           fontSize: 24,
           color: Theme.of(context).colorScheme.primary,
