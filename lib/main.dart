@@ -40,17 +40,18 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  final _focusNode1 = FocusNode(debugLabel: '1');
-  final _focusNode2 = FocusNode(debugLabel: '2');
-  final _focusNode3 = FocusNode(debugLabel: '3');
-  final _focusNode4 = FocusNode(debugLabel: '4');
+  final _tiles = <_TileFocusData>[
+    _TileFocusData(label: 'B', key: LogicalKeyboardKey.keyB),
+    _TileFocusData(label: 'X', key: LogicalKeyboardKey.keyX),
+    _TileFocusData(label: 'G', key: LogicalKeyboardKey.keyG),
+    _TileFocusData(label: 'L', key: LogicalKeyboardKey.keyL),
+  ];
 
   @override
   void dispose() {
-    _focusNode1.dispose();
-    _focusNode2.dispose();
-    _focusNode3.dispose();
-    _focusNode4.dispose();
+    for (final tile in _tiles) {
+      tile.focusNode.dispose();
+    }
     super.dispose();
   }
 
@@ -65,14 +66,8 @@ class _PageState extends State<_Page> {
         const SingleActivator(LogicalKeyboardKey.arrowDown):
             const DirectionalFocusIntent(TraversalDirection.down),
         // Tile shortcuts
-        const SingleActivator(LogicalKeyboardKey.keyA):
-            RequestFocusIntent(_focusNode1),
-        const SingleActivator(LogicalKeyboardKey.keyB):
-            RequestFocusIntent(_focusNode2),
-        const SingleActivator(LogicalKeyboardKey.keyC):
-            RequestFocusIntent(_focusNode3),
-        const SingleActivator(LogicalKeyboardKey.keyD):
-            RequestFocusIntent(_focusNode4),
+        for (final tile in _tiles)
+          SingleActivator(tile.key): RequestFocusIntent(tile.focusNode),
       },
       child: Scaffold(
         body: SingleChildScrollView(
@@ -108,28 +103,28 @@ class _PageState extends State<_Page> {
                     icon: const FaIcon(FontAwesomeIcons.lightbulb),
                     title: 'Blog',
                     url: Uri.parse('https://idiomaticbytes.com'),
-                    focusNode: _focusNode1,
+                    focusData: _tiles[0],
                   ),
                   const SizedBox(height: 32),
                   _Tile(
                     icon: const FaIcon(FontAwesomeIcons.xTwitter),
                     title: 'Twitter',
                     url: Uri.parse('https://x.com/IdiomaticBytes'),
-                    focusNode: _focusNode2,
+                    focusData: _tiles[1],
                   ),
                   const SizedBox(height: 32),
                   _Tile(
                     icon: const FaIcon(FontAwesomeIcons.github),
                     title: 'GitHub',
                     url: Uri.parse('https://github.com/CillianMyles'),
-                    focusNode: _focusNode3,
+                    focusData: _tiles[2],
                   ),
                   const SizedBox(height: 32),
                   _Tile(
                     icon: const FaIcon(FontAwesomeIcons.linkedin),
                     title: 'LinkedIn',
                     url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
-                    focusNode: _focusNode4,
+                    focusData: _tiles[3],
                   ),
                   const SizedBox(height: 128),
                 ],
@@ -142,20 +137,29 @@ class _PageState extends State<_Page> {
   }
 }
 
+class _TileFocusData {
+  _TileFocusData({
+    required this.label,
+    required this.key,
+  }) : focusNode = FocusNode(debugLabel: label);
+
+  final String label;
+  final LogicalKeyboardKey key;
+  final FocusNode focusNode;
+}
+
 class _Tile extends StatelessWidget {
   const _Tile({
     required this.icon,
     required this.title,
     required this.url,
-    required this.focusNode,
-    this.autofocus = false,
+    required this.focusData,
   });
 
   final Widget icon;
   final String title;
   final Uri url;
-  final FocusNode focusNode;
-  final bool autofocus;
+  final _TileFocusData focusData;
 
   Future<void> _launchUrl() async {
     final succeeded = await launchUrl(
@@ -170,10 +174,21 @@ class _Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final desktop = MediaQuery.sizeOf(context).width >= 600;
+    final Widget icon;
+
+    if (desktop) {
+      icon = OutlinedButton(
+        onPressed: () => focusData.focusNode.requestFocus(),
+        child: Text(
+          focusData.focusNode.hasFocus ? '⏎' : focusData.label,
+        ),
+      );
+    } else {
+      icon = this.icon;
+    }
 
     final tile = ListTile(
-      focusNode: focusNode,
-      autofocus: autofocus,
+      focusNode: focusData.focusNode,
       onTap: _launchUrl,
       leading: icon,
       title: Text(
@@ -187,44 +202,12 @@ class _Tile extends StatelessWidget {
       ),
     );
 
-    final Widget result;
-
-    if (desktop) {
-      // result = Row(
-      //   mainAxisSize: MainAxisSize.max,
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: [
-      //     SizedBox(
-      //       width: 40,
-      //       child: ElevatedButton(
-      //         onPressed: () => _focusNode.requestFocus(),
-      //         child: Text(_keys[widget.activatorKey]!),
-      //       ),
-      //     ),
-      //     const SizedBox(width: 8),
-      //     tile,
-      //     const SizedBox(width: 8),
-      //     SizedBox(
-      //       width: 40,
-      //       child: ElevatedButton(
-      //         onPressed: _launchUrl,
-      //         child: const Text('⏎'),
-      //       ),
-      //     ),
-      //   ],
-      // );
-      result = tile;
-    } else {
-      result = tile;
-    }
-
     return Material(
       type: MaterialType.card,
       elevation: 4,
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
-      child: result,
+      child: tile,
     );
   }
 }
