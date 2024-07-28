@@ -51,7 +51,7 @@ class _PageState extends State<_Page> {
   @override
   void dispose() {
     for (final tile in _tiles) {
-      tile.node.dispose();
+      tile.focusNode.dispose();
     }
     super.dispose();
   }
@@ -68,7 +68,7 @@ class _PageState extends State<_Page> {
             const DirectionalFocusIntent(TraversalDirection.down),
         // Tile shortcuts
         for (final tile in _tiles)
-          SingleActivator(tile.key): RequestFocusIntent(tile.node),
+          SingleActivator(tile.keyboardKey): RequestFocusIntent(tile.focusNode),
       },
       child: Scaffold(
         body: SingleChildScrollView(
@@ -99,41 +99,10 @@ class _PageState extends State<_Page> {
                     style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 32),
-                  _Tile(
-                    icon: const FaIcon(FontAwesomeIcons.video),
-                    title: 'YouTube',
-                    url: Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
-                    focusData: _tiles[0],
-                  ),
-                  const SizedBox(height: 32),
-                  _Tile(
-                    icon: const FaIcon(FontAwesomeIcons.lightbulb),
-                    title: 'Blog',
-                    url: Uri.parse('https://idiomaticbytes.com'),
-                    focusData: _tiles[1],
-                  ),
-                  const SizedBox(height: 32),
-                  _Tile(
-                    icon: const FaIcon(FontAwesomeIcons.xTwitter),
-                    title: 'Twitter',
-                    url: Uri.parse('https://x.com/IdiomaticBytes'),
-                    focusData: _tiles[2],
-                  ),
-                  const SizedBox(height: 32),
-                  _Tile(
-                    icon: const FaIcon(FontAwesomeIcons.github),
-                    title: 'GitHub',
-                    url: Uri.parse('https://github.com/CillianMyles'),
-                    focusData: _tiles[3],
-                  ),
-                  const SizedBox(height: 32),
-                  _Tile(
-                    icon: const FaIcon(FontAwesomeIcons.linkedin),
-                    title: 'LinkedIn',
-                    url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
-                    focusData: _tiles[4],
-                  ),
+                  for (final tile in _tiles) ...[
+                    const SizedBox(height: 32),
+                    _Tile(data: tile),
+                  ],
                   const SizedBox(height: 128),
                 ],
               ),
@@ -148,55 +117,70 @@ class _PageState extends State<_Page> {
 class _Tiles {
   const _Tiles._();
 
-  static final youTube = _TileFocusData(
-    label: 'Y',
-    key: LogicalKeyboardKey.keyY,
+  static final youTube = _TileData(
+    icon: const FaIcon(FontAwesomeIcons.video),
+    title: 'YouTube',
+    keyLabel: 'Y',
+    keyboardKey: LogicalKeyboardKey.keyY,
+    url: Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
   );
 
-  static final blog = _TileFocusData(
-    label: 'B',
-    key: LogicalKeyboardKey.keyB,
+  static final blog = _TileData(
+    icon: const FaIcon(FontAwesomeIcons.lightbulb),
+    title: 'Blog',
+    keyLabel: 'B',
+    keyboardKey: LogicalKeyboardKey.keyB,
+    url: Uri.parse('https://idiomaticbytes.com'),
   );
 
-  static final twitter = _TileFocusData(
-    label: 'X',
-    key: LogicalKeyboardKey.keyX,
+  static final twitter = _TileData(
+    icon: const FaIcon(FontAwesomeIcons.xTwitter),
+    title: 'Twitter',
+    keyLabel: 'X',
+    keyboardKey: LogicalKeyboardKey.keyX,
+    url: Uri.parse('https://x.com/IdiomaticBytes'),
   );
 
-  static final gitHub = _TileFocusData(
-    label: 'G',
-    key: LogicalKeyboardKey.keyG,
+  static final gitHub = _TileData(
+    icon: const FaIcon(FontAwesomeIcons.github),
+    title: 'GitHub',
+    keyLabel: 'G',
+    keyboardKey: LogicalKeyboardKey.keyG,
+    url: Uri.parse('https://github.com/CillianMyles'),
   );
 
-  static final linkedIn = _TileFocusData(
-    label: 'L',
-    key: LogicalKeyboardKey.keyL,
+  static final linkedIn = _TileData(
+    icon: const FaIcon(FontAwesomeIcons.linkedin),
+    title: 'LinkedIn',
+    keyLabel: 'L',
+    keyboardKey: LogicalKeyboardKey.keyL,
+    url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
   );
 }
 
-class _TileFocusData {
-  _TileFocusData({
-    required this.label,
-    required this.key,
-  }) : node = FocusNode(debugLabel: label);
+class _TileData {
+  _TileData({
+    required this.icon,
+    required this.title,
+    required this.keyLabel,
+    required this.keyboardKey,
+    required this.url,
+  }) : focusNode = FocusNode(debugLabel: keyLabel);
 
-  final String label;
-  final LogicalKeyboardKey key;
-  final FocusNode node;
+  final FaIcon icon;
+  final String title;
+  final String keyLabel;
+  final LogicalKeyboardKey keyboardKey;
+  final FocusNode focusNode;
+  final Uri url;
 }
 
 class _Tile extends StatefulWidget {
   const _Tile({
-    required this.icon,
-    required this.title,
-    required this.url,
-    required this.focusData,
+    required this.data,
   });
 
-  final Widget icon;
-  final String title;
-  final Uri url;
-  final _TileFocusData focusData;
+  final _TileData data;
 
   @override
   State<_Tile> createState() => _TileState();
@@ -206,7 +190,7 @@ class _TileState extends State<_Tile> {
   @override
   void initState() {
     super.initState();
-    widget.focusData.node.addListener(_onFocusChanged);
+    widget.data.focusNode.addListener(_onFocusChanged);
   }
 
   void _onFocusChanged() {
@@ -215,11 +199,11 @@ class _TileState extends State<_Tile> {
 
   Future<void> _launchUrl() async {
     final succeeded = await launchUrl(
-      widget.url,
+      widget.data.url,
       webOnlyWindowName: '_blank',
     );
     if (!succeeded) {
-      throw Exception('Could not launch ${widget.url}');
+      throw Exception('Could not launch ${widget.data.url}');
     }
   }
 
@@ -230,18 +214,18 @@ class _TileState extends State<_Tile> {
 
     if (desktop) {
       icon = _KeyButton(
-        label: widget.focusData.node.hasFocus ? '⏎' : widget.focusData.label,
+        label: widget.data.focusNode.hasFocus ? '⏎' : widget.data.keyLabel,
       );
     } else {
-      icon = widget.icon;
+      icon = widget.data.icon;
     }
 
     final tile = ListTile(
-      focusNode: widget.focusData.node,
+      focusNode: widget.data.focusNode,
       onTap: _launchUrl,
       leading: icon,
       title: Text(
-        widget.title,
+        widget.data.title,
         style: TextStyle(
           fontSize: 24,
           color: Theme.of(context).colorScheme.primary,
@@ -305,37 +289,6 @@ class _KeyButton extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
-    );
-  }
-}
-
-class _Container extends StatelessWidget {
-  const _Container({
-    required this.child,
-    required this.borderRadius,
-    required this.elevation,
-  });
-
-  final Widget child;
-  final BorderRadius borderRadius;
-  final double elevation;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: borderRadius,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, elevation / 2),
-            blurRadius: elevation,
-          ),
-        ],
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: child,
     );
   }
 }
