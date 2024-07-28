@@ -118,7 +118,7 @@ class _Tiles {
   const _Tiles._();
 
   static final youTube = _TileData(
-    icon: const FaIcon(FontAwesomeIcons.video),
+    icon: const FaIcon(FontAwesomeIcons.youtube),
     title: 'YouTube',
     keyLabel: 'Y',
     keyboardKey: LogicalKeyboardKey.keyY,
