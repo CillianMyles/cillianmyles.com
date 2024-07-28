@@ -270,17 +270,21 @@ class _KeyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: 32,
       height: 32,
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        border: Border.all(width: 1.0, color: Colors.grey[400]!),
+        color: theme.colorScheme.surfaceContainerHigh,
+        border: Border.all(
+          width: 1.0,
+          color: theme.colorScheme.outline,
+        ),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Colors.black26,
-            offset: Offset(2, 2),
+            color: theme.colorScheme.shadow,
+            offset: const Offset(2, 2),
             blurRadius: 2,
           ),
         ],
