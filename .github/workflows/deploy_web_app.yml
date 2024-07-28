@@ -1,0 +1,29 @@
+---
+name: Deploy Web App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-web-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: Fetch dependencies
+        run: flutter pub get
+      - name: Build Flutter web app
+        run: flutter build web --release
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          publish_dir: ./build/web
+          cname: cillianmyles.com
