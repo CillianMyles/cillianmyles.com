@@ -254,7 +254,13 @@ class _TileState extends State<_Tile> {
     return Material(
       type: MaterialType.card,
       elevation: 4,
-      borderRadius: BorderRadius.circular(16),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outlineVariant,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
       clipBehavior: Clip.antiAlias,
       child: tile,
     );
