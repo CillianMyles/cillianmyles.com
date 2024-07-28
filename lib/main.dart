@@ -187,6 +187,8 @@ class _Tile extends StatefulWidget {
 }
 
 class _TileState extends State<_Tile> {
+  static const _tapRegionGroupId = '_Tile';
+
   @override
   void initState() {
     super.initState();
@@ -204,6 +206,12 @@ class _TileState extends State<_Tile> {
     );
     if (!succeeded) {
       throw Exception('Could not launch ${widget.data.url}');
+    }
+  }
+
+  void maybeUnfocus() {
+    if (widget.data.focusNode.hasFocus) {
+      widget.data.focusNode.unfocus();
     }
   }
 
@@ -228,18 +236,22 @@ class _TileState extends State<_Tile> {
       actions: {
         DismissIntent: CallbackAction(onInvoke: (_) => unfocus()),
       },
-      child: ListTile(
-        focusNode: widget.data.focusNode,
-        onTap: _launchUrl,
-        leading: icon,
-        title: Text(
-          widget.data.title,
-          style: TextStyle(
-            fontSize: 24,
-            color: Theme.of(context).colorScheme.primary,
+      child: TapRegion(
+        groupId: _tapRegionGroupId,
+        onTapOutside: (_) => maybeUnfocus(),
+        child: ListTile(
+          focusNode: widget.data.focusNode,
+          onTap: _launchUrl,
+          leading: icon,
+          title: Text(
+            widget.data.title,
+            style: TextStyle(
+              fontSize: 24,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
