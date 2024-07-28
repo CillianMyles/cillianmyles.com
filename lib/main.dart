@@ -40,7 +40,13 @@ class _Page extends StatefulWidget {
 }
 
 class _PageState extends State<_Page> {
-  final _tiles = [_Tiles.blog, _Tiles.twitter, _Tiles.gitHub, _Tiles.linkedIn];
+  final _tiles = [
+    _Tiles.youTube,
+    _Tiles.blog,
+    _Tiles.twitter,
+    _Tiles.gitHub,
+    _Tiles.linkedIn,
+  ];
 
   @override
   void dispose() {
@@ -95,31 +101,38 @@ class _PageState extends State<_Page> {
                   ),
                   const SizedBox(height: 32),
                   _Tile(
+                    icon: const FaIcon(FontAwesomeIcons.video),
+                    title: 'YouTube',
+                    url: Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
+                    focusData: _tiles[0],
+                  ),
+                  const SizedBox(height: 32),
+                  _Tile(
                     icon: const FaIcon(FontAwesomeIcons.lightbulb),
                     title: 'Blog',
                     url: Uri.parse('https://idiomaticbytes.com'),
-                    focusData: _tiles[0],
+                    focusData: _tiles[1],
                   ),
                   const SizedBox(height: 32),
                   _Tile(
                     icon: const FaIcon(FontAwesomeIcons.xTwitter),
                     title: 'Twitter',
                     url: Uri.parse('https://x.com/IdiomaticBytes'),
-                    focusData: _tiles[1],
+                    focusData: _tiles[2],
                   ),
                   const SizedBox(height: 32),
                   _Tile(
                     icon: const FaIcon(FontAwesomeIcons.github),
                     title: 'GitHub',
                     url: Uri.parse('https://github.com/CillianMyles'),
-                    focusData: _tiles[2],
+                    focusData: _tiles[3],
                   ),
                   const SizedBox(height: 32),
                   _Tile(
                     icon: const FaIcon(FontAwesomeIcons.linkedin),
                     title: 'LinkedIn',
                     url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
-                    focusData: _tiles[3],
+                    focusData: _tiles[4],
                   ),
                   const SizedBox(height: 128),
                 ],
@@ -134,6 +147,11 @@ class _PageState extends State<_Page> {
 
 class _Tiles {
   const _Tiles._();
+
+  static final youTube = _TileFocusData(
+    label: 'Y',
+    key: LogicalKeyboardKey.keyY,
+  );
 
   static final blog = _TileFocusData(
     label: 'B',
