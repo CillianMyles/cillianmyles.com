@@ -226,7 +226,9 @@ class _TileState extends State<_Tile> {
 
     if (desktop) {
       icon = _KeyButton(
-        label: widget.data.focusNode.hasFocus ? '⏎' : widget.data.keyLabel,
+        child: widget.data.focusNode.hasFocus
+            ? const Icon(Icons.keyboard_return)
+            : Text(widget.data.keyLabel),
       );
     } else {
       icon = widget.data.icon;
@@ -274,14 +276,17 @@ class _TileState extends State<_Tile> {
 
 class _KeyButton extends StatelessWidget {
   const _KeyButton({
-    required this.label,
+    required this.child,
   });
 
-  final String label;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const primarySize = 22.0;
+    final primaryColor = theme.colorScheme.primary;
+
     return Container(
       width: 32,
       height: 32,
@@ -301,13 +306,19 @@ class _KeyButton extends StatelessWidget {
         ],
       ),
       alignment: Alignment.center,
-      child: Text(
-        label,
+      child: DefaultTextStyle(
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 22,
+          color: primaryColor,
+          fontSize: primarySize,
           fontWeight: FontWeight.w500,
-          color: Theme.of(context).colorScheme.primary,
+        ),
+        child: IconTheme.merge(
+          data: IconThemeData(
+            color: primaryColor,
+            size: primarySize,
+          ),
+          child: child,
         ),
       ),
     );
