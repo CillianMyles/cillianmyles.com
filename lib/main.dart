@@ -207,6 +207,10 @@ class _TileState extends State<_Tile> {
     }
   }
 
+  void unfocus() {
+    widget.data.focusNode.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     final desktop = MediaQuery.sizeOf(context).width >= 600;
@@ -220,18 +224,23 @@ class _TileState extends State<_Tile> {
       icon = widget.data.icon;
     }
 
-    final tile = ListTile(
-      focusNode: widget.data.focusNode,
-      onTap: _launchUrl,
-      leading: icon,
-      title: Text(
-        widget.data.title,
-        style: TextStyle(
-          fontSize: 24,
-          color: Theme.of(context).colorScheme.primary,
+    final tile = Actions(
+      actions: {
+        DismissIntent: CallbackAction(onInvoke: (_) => unfocus()),
+      },
+      child: ListTile(
+        focusNode: widget.data.focusNode,
+        onTap: _launchUrl,
+        leading: icon,
+        title: Text(
+          widget.data.title,
+          style: TextStyle(
+            fontSize: 24,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ),
     );
 
