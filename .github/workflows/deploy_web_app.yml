@@ -20,7 +20,7 @@ jobs:
       - name: Fetch dependencies
         run: flutter pub get
       - name: Build Flutter web app
-        run: flutter build web --release --web-renderer canvaskit
+        run: flutter build web --release --web-renderer canvaskit --wasm
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
