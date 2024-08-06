@@ -129,7 +129,7 @@ class _Tiles {
   const _Tiles._();
 
   static final youTube = _TileData(
-    icon: const FaIcon(FontAwesomeIcons.youtube),
+    iconData: FontAwesomeIcons.youtube,
     title: 'YouTube',
     keyLabel: 'Y',
     keyboardKey: LogicalKeyboardKey.keyY,
@@ -137,7 +137,7 @@ class _Tiles {
   );
 
   static final blog = _TileData(
-    icon: const FaIcon(FontAwesomeIcons.lightbulb),
+    iconData: FontAwesomeIcons.lightbulb,
     title: 'Blog',
     keyLabel: 'B',
     keyboardKey: LogicalKeyboardKey.keyB,
@@ -145,7 +145,7 @@ class _Tiles {
   );
 
   static final twitter = _TileData(
-    icon: const FaIcon(FontAwesomeIcons.xTwitter),
+    iconData: FontAwesomeIcons.xTwitter,
     title: 'Twitter',
     keyLabel: 'X',
     keyboardKey: LogicalKeyboardKey.keyX,
@@ -153,7 +153,7 @@ class _Tiles {
   );
 
   static final gitHub = _TileData(
-    icon: const FaIcon(FontAwesomeIcons.github),
+    iconData: FontAwesomeIcons.github,
     title: 'GitHub',
     keyLabel: 'G',
     keyboardKey: LogicalKeyboardKey.keyG,
@@ -161,7 +161,7 @@ class _Tiles {
   );
 
   static final linkedIn = _TileData(
-    icon: const FaIcon(FontAwesomeIcons.linkedin),
+    iconData: FontAwesomeIcons.linkedin,
     title: 'LinkedIn',
     keyLabel: 'L',
     keyboardKey: LogicalKeyboardKey.keyL,
@@ -171,14 +171,14 @@ class _Tiles {
 
 class _TileData {
   _TileData({
-    required this.icon,
+    required this.iconData,
     required this.title,
     required this.keyLabel,
     required this.keyboardKey,
     required this.url,
   }) : focusNode = FocusNode(debugLabel: keyLabel);
 
-  final FaIcon icon;
+  final IconData iconData;
   final String title;
   final String keyLabel;
   final LogicalKeyboardKey keyboardKey;
@@ -242,7 +242,9 @@ class _TileState extends State<_Tile> {
             : Text(widget.data.keyLabel),
       );
     } else {
-      icon = widget.data.icon;
+      icon = _Icon(
+        iconData: widget.data.iconData,
+      );
     }
 
     final tile = Actions(
@@ -333,6 +335,29 @@ class _KeyButton extends StatelessWidget {
           ),
           child: child,
         ),
+      ),
+    );
+  }
+}
+
+class _Icon extends StatelessWidget {
+  const _Icon({
+    required this.iconData,
+  });
+
+  final IconData iconData;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: 32,
+      height: 32,
+      alignment: Alignment.center,
+      child: FaIcon(
+        iconData,
+        size: 22,
+        color: theme.colorScheme.primary,
       ),
     );
   }
