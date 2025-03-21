@@ -41,11 +41,11 @@ class _Page extends StatefulWidget {
 
 class _PageState extends State<_Page> {
   final _tiles = [
-    _Tiles.youTube,
-    _Tiles.blog,
     _Tiles.twitter,
     _Tiles.gitHub,
     _Tiles.linkedIn,
+    _Tiles.blog,
+    _Tiles.youTube,
   ];
 
   @override
