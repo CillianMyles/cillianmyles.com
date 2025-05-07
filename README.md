@@ -1,16 +1,7 @@
 # links
 
-A link-in-bio website built with Flutter
+A link-in-bio website built with Flutter 💙
 
-## Getting Started
+The purpose of this website is not to prove that Flutter is always the best choice for any frontend. 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+It's purpose is to show just how easy it is to build and deploy a simple website with Flutter.
