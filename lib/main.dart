@@ -300,6 +300,12 @@ class _TileState extends State<_Tile> {
     widget.data.focusNode.addListener(_onFocusChanged);
   }
 
+  @override
+  void dispose() {
+    widget.data.focusNode.removeListener(_onFocusChanged);
+    super.dispose();
+  }
+
   void _onFocusChanged() {
     setState(() {});
   }
