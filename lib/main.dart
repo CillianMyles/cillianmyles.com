@@ -148,7 +148,9 @@ class _Tiles {
     keyLabel: 'R',
     keyboardKey: LogicalKeyboardKey.keyR,
     tapAction: _DownloadFile(
-      url: Uri.parse('assets/docs/Cillian_Myles_Resume.pdf'),
+      url: Uri.parse(
+        'https://raw.githubusercontent.com/CillianMyles/cillianmyles.com/refs/heads/main/assets/docs/Cillian_Myles_Resume.pdf',
+      ),
       message: 'Resume downloaded!',
     ),
   );
