@@ -179,7 +179,7 @@ class _Tiles {
       url: Uri.parse(
         'https://raw.githubusercontent.com/CillianMyles/cillianmyles.com/refs/heads/main/assets/docs/Cillian_Myles_Resume.pdf',
       ),
-      message: 'Resume downloaded!',
+      message: 'Resume download started!',
     ),
   );
 
@@ -322,13 +322,7 @@ class _TileState extends State<_Tile> {
   }
 
   Future<void> _launchUrl(Uri url) async {
-    final succeeded = await launchUrl(
-      url,
-      webOnlyWindowName: '_blank',
-    );
-    if (!succeeded) {
-      throw Exception('Could not launch $url');
-    }
+    await launchUrl(url, webOnlyWindowName: '_blank');
   }
 
   Future<void> _copyToClipboard({
@@ -336,8 +330,8 @@ class _TileState extends State<_Tile> {
     String? message,
   }) async {
     await Clipboard.setData(ClipboardData(text: text));
-
-    if (mounted && message != null) {
+    if (!mounted) return;
+    if (message != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
