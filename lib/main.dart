@@ -124,26 +124,10 @@ class _PageState extends State<_Page> {
                   children: [
                     const SizedBox(height: 32),
                     Text(
-                      'Copyright © 2025 Cillian Myles',
+                      'Built with Flutter 💙 by Cillian Myles',
                       style: Theme.of(context).textTheme.bodySmall,
-                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Built with Flutter ',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Icon(
-                          Icons.favorite,
-                          size: 16,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 0),
+                    const SizedBox(height: 2),
                     InkWell(
                       onTap: () => launchUrl(
                         Uri.parse(
