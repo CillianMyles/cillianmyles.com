@@ -19812,7 +19812,7 @@ A.a3K.prototype={
 $1(a){var s=A.d_().b
 if(s==null)s=null
 else{s=s.canvasKitBaseUrl
-if(s==null)s=null}return(s==null?"https://www.gstatic.com/flutter-canvaskit/18b71d647a292a980abb405ac7d16fe1f0b20434/":s)+a},
+if(s==null)s=null}return(s==null?"https://www.gstatic.com/flutter-canvaskit/cf56914b326edb0ccb123ffdc60f00060bd513fa/":s)+a},
 $S:66}
 A.Mf.prototype={
 ca(){B.c.U(this.a.a.save())},
@@ -63861,11 +63861,11 @@ s($,"aug","ag5",()=>A.R5(A.bA([B.fw],t.r)))
 s($,"ats","afz",()=>A.R5(A.bA([B.fx],t.r)))
 s($,"aub","ag3",()=>A.R5(A.bA([B.fy],t.r)))
 s($,"auX","agv",()=>new A.V7(A.u(t.N,A.aa("a0<bM?>?(bM?)"))))
-s($,"atc","afl",()=>A.Je(B.yw,"Y",B.jN,"YouTube",A.eh("https://www.youtube.com/@IdiomaticBytes",0,null)))
-s($,"at8","afh",()=>A.Je(B.yx,"B",B.fD,"Blog",A.eh("https://idiomaticbytes.com",0,null)))
 s($,"atb","afk",()=>A.Je(B.yt,"X",B.dJ,"Twitter",A.eh("https://x.com/IdiomaticBytes",0,null)))
 s($,"at9","afi",()=>A.Je(B.yv,"G",B.jI,"GitHub",A.eh("https://github.com/CillianMyles",0,null)))
 s($,"ata","afj",()=>A.Je(B.yu,"L",B.jJ,"LinkedIn",A.eh("https://www.linkedin.com/in/cillianmyles",0,null)))
+s($,"at8","afh",()=>A.Je(B.yx,"B",B.fD,"Blog",A.eh("https://idiomaticbytes.com",0,null)))
+s($,"atc","afl",()=>A.Je(B.yw,"Y",B.jN,"YouTube",A.eh("https://www.youtube.com/@IdiomaticBytes",0,null)))
 r($,"ard","a7Z",()=>{var q=null
 return A.aO(q,q,!0,"background",new A.Rd(),q,new A.Re(),q)})
 r($,"arj","aea",()=>A.aO(new A.Rv(),A.bh(3,3,4.5,7),!1,"on_background",new A.Rw(),null,new A.Rx(),null))
