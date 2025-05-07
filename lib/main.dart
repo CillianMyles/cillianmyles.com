@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:html' as html;
 
 void main() {
   runApp(const App());
@@ -343,20 +342,11 @@ class _TileState extends State<_Tile> {
     required Uri url,
     String? message,
   }) async {
-    try {
-      // For web, we use the AnchorElement to trigger the download
-      html.AnchorElement(href: url.toString())
-        ..setAttribute('download', '')
-        ..click();
-
-      if (message != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
-      }
-    } catch (e) {
+    await launchUrl(url, webOnlyWindowName: '_blank');
+    if (!mounted) return;
+    if (message != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Download failed!")),
+        SnackBar(content: Text(message)),
       );
     }
   }
