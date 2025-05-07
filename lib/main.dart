@@ -41,6 +41,7 @@ class _Page extends StatefulWidget {
 
 class _PageState extends State<_Page> {
   final _tiles = [
+    _Tiles.email,
     _Tiles.twitter,
     _Tiles.gitHub,
     _Tiles.linkedIn,
@@ -128,6 +129,17 @@ class _PageState extends State<_Page> {
 class _Tiles {
   const _Tiles._();
 
+  static final email = _TileData(
+    iconData: FontAwesomeIcons.envelope,
+    title: 'Email',
+    keyLabel: 'E',
+    keyboardKey: LogicalKeyboardKey.keyE,
+    tapAction: const _CopyToClipboard(
+      text: 'getme@cillianmyles.com',
+      message: 'Email copied to clipboard!',
+    ),
+  );
+
   static final twitter = _TileData(
     iconData: FontAwesomeIcons.xTwitter,
     title: 'Twitter',
@@ -189,8 +201,13 @@ class _LaunchUrl extends _TapAction {
 }
 
 class _CopyToClipboard extends _TapAction {
-  const _CopyToClipboard(this.text);
+  const _CopyToClipboard({
+    required this.text,
+    this.message,
+  });
+
   final String text;
+  final String? message;
 }
 
 class _TileData {
@@ -238,8 +255,8 @@ class _TileState extends State<_Tile> {
     switch (widget.data.tapAction) {
       case _LaunchUrl(url: final url):
         await _launchUrl(url);
-      case _CopyToClipboard(text: final text):
-        await _copyToClipboard(text);
+      case _CopyToClipboard(text: final text, message: final message):
+        await _copyToClipboard(text: text, message: message);
     }
   }
 
@@ -253,8 +270,16 @@ class _TileState extends State<_Tile> {
     }
   }
 
-  Future<void> _copyToClipboard(String text) async {
+  Future<void> _copyToClipboard({
+    required String text,
+    String? message,
+  }) async {
     await Clipboard.setData(ClipboardData(text: text));
+
+    if (mounted && message != null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
   }
 
   void maybeUnfocus() {
