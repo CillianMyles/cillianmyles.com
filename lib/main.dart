@@ -118,6 +118,51 @@ class _PageState extends State<_Page> {
                 childCount: _tiles.length * 2 + 1,
               ),
             ),
+            SliverToBoxAdapter(
+              child: _ConstrainedContent(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    Text(
+                      'Copyright © 2025 Cillian Myles',
+                      style: Theme.of(context).textTheme.bodySmall,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Built with Flutter ',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        Icon(
+                          Icons.favorite,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 0),
+                    InkWell(
+                      onTap: () => launchUrl(
+                        Uri.parse(
+                          'https://github.com/CillianMyles/cillianmyles.com',
+                        ),
+                        webOnlyWindowName: '_blank',
+                      ),
+                      child: Text(
+                        'View source code',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              decoration: TextDecoration.underline,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SliverToBoxAdapter(
               child: SizedBox(height: 128),
             ),
