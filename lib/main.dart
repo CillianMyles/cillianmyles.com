@@ -128,22 +128,6 @@ class _PageState extends State<_Page> {
 class _Tiles {
   const _Tiles._();
 
-  static final youTube = _TileData(
-    iconData: FontAwesomeIcons.youtube,
-    title: 'YouTube',
-    keyLabel: 'Y',
-    keyboardKey: LogicalKeyboardKey.keyY,
-    url: Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
-  );
-
-  static final blog = _TileData(
-    iconData: FontAwesomeIcons.lightbulb,
-    title: 'Blog',
-    keyLabel: 'B',
-    keyboardKey: LogicalKeyboardKey.keyB,
-    url: Uri.parse('https://idiomaticbytes.com'),
-  );
-
   static final twitter = _TileData(
     iconData: FontAwesomeIcons.xTwitter,
     title: 'Twitter',
@@ -166,6 +150,22 @@ class _Tiles {
     keyLabel: 'L',
     keyboardKey: LogicalKeyboardKey.keyL,
     url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
+  );
+
+  static final blog = _TileData(
+    iconData: FontAwesomeIcons.lightbulb,
+    title: 'Blog',
+    keyLabel: 'B',
+    keyboardKey: LogicalKeyboardKey.keyB,
+    url: Uri.parse('https://idiomaticbytes.com'),
+  );
+
+  static final youTube = _TileData(
+    iconData: FontAwesomeIcons.youtube,
+    title: 'YouTube',
+    keyLabel: 'Y',
+    keyboardKey: LogicalKeyboardKey.keyY,
+    url: Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
   );
 }
 
