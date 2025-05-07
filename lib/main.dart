@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:html' as html;
 
 void main() {
   runApp(const App());
@@ -42,6 +43,7 @@ class _Page extends StatefulWidget {
 class _PageState extends State<_Page> {
   final _tiles = [
     _Tiles.email,
+    _Tiles.resume,
     _Tiles.twitter,
     _Tiles.gitHub,
     _Tiles.linkedIn,
@@ -140,6 +142,17 @@ class _Tiles {
     ),
   );
 
+  static final resume = _TileData(
+    iconData: FontAwesomeIcons.fileLines,
+    title: 'Resume / CV',
+    keyLabel: 'R',
+    keyboardKey: LogicalKeyboardKey.keyR,
+    tapAction: _DownloadFile(
+      url: Uri.parse('assets/docs/Cillian_Myles_Resume.pdf'),
+      message: 'Resume downloaded!',
+    ),
+  );
+
   static final twitter = _TileData(
     iconData: FontAwesomeIcons.xTwitter,
     title: 'Twitter',
@@ -210,6 +223,16 @@ class _CopyToClipboard extends _TapAction {
   final String? message;
 }
 
+class _DownloadFile extends _TapAction {
+  const _DownloadFile({
+    required this.url,
+    this.message,
+  });
+
+  final Uri url;
+  final String? message;
+}
+
 class _TileData {
   _TileData({
     required this.iconData,
@@ -257,6 +280,8 @@ class _TileState extends State<_Tile> {
         await _launchUrl(url);
       case _CopyToClipboard(text: final text, message: final message):
         await _copyToClipboard(text: text, message: message);
+      case _DownloadFile(url: final url, message: final message):
+        await _downloadFile(url: url, message: message);
     }
   }
 
@@ -277,8 +302,31 @@ class _TileState extends State<_Tile> {
     await Clipboard.setData(ClipboardData(text: text));
 
     if (mounted && message != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
+  }
+
+  Future<void> _downloadFile({
+    required Uri url,
+    String? message,
+  }) async {
+    try {
+      // For web, we use the AnchorElement to trigger the download
+      html.AnchorElement(href: url.toString())
+        ..setAttribute('download', '')
+        ..click();
+
+      if (message != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Download failed!")),
+      );
     }
   }
 
