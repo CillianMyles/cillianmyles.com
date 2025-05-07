@@ -133,7 +133,9 @@ class _Tiles {
     title: 'Twitter',
     keyLabel: 'X',
     keyboardKey: LogicalKeyboardKey.keyX,
-    url: Uri.parse('https://x.com/IdiomaticBytes'),
+    tapAction: _LaunchUrl(
+      Uri.parse('https://x.com/IdiomaticBytes'),
+    ),
   );
 
   static final gitHub = _TileData(
@@ -141,7 +143,9 @@ class _Tiles {
     title: 'GitHub',
     keyLabel: 'G',
     keyboardKey: LogicalKeyboardKey.keyG,
-    url: Uri.parse('https://github.com/CillianMyles'),
+    tapAction: _LaunchUrl(
+      Uri.parse('https://github.com/CillianMyles'),
+    ),
   );
 
   static final linkedIn = _TileData(
@@ -149,7 +153,9 @@ class _Tiles {
     title: 'LinkedIn',
     keyLabel: 'L',
     keyboardKey: LogicalKeyboardKey.keyL,
-    url: Uri.parse('https://www.linkedin.com/in/cillianmyles'),
+    tapAction: _LaunchUrl(
+      Uri.parse('https://www.linkedin.com/in/cillianmyles'),
+    ),
   );
 
   static final blog = _TileData(
@@ -157,7 +163,9 @@ class _Tiles {
     title: 'Blog',
     keyLabel: 'B',
     keyboardKey: LogicalKeyboardKey.keyB,
-    url: Uri.parse('https://idiomaticbytes.com'),
+    tapAction: _LaunchUrl(
+      Uri.parse('https://idiomaticbytes.com'),
+    ),
   );
 
   static final youTube = _TileData(
@@ -165,8 +173,24 @@ class _Tiles {
     title: 'YouTube',
     keyLabel: 'Y',
     keyboardKey: LogicalKeyboardKey.keyY,
-    url: Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
+    tapAction: _LaunchUrl(
+      Uri.parse('https://www.youtube.com/@IdiomaticBytes'),
+    ),
   );
+}
+
+sealed class _TapAction {
+  const _TapAction();
+}
+
+class _LaunchUrl extends _TapAction {
+  const _LaunchUrl(this.url);
+  final Uri url;
+}
+
+class _CopyToClipboard extends _TapAction {
+  const _CopyToClipboard(this.text);
+  final String text;
 }
 
 class _TileData {
@@ -175,7 +199,7 @@ class _TileData {
     required this.title,
     required this.keyLabel,
     required this.keyboardKey,
-    required this.url,
+    required this.tapAction,
   }) : focusNode = FocusNode(debugLabel: keyLabel);
 
   final IconData iconData;
@@ -183,7 +207,7 @@ class _TileData {
   final String keyLabel;
   final LogicalKeyboardKey keyboardKey;
   final FocusNode focusNode;
-  final Uri url;
+  final _TapAction tapAction;
 }
 
 class _Tile extends StatefulWidget {
@@ -210,14 +234,27 @@ class _TileState extends State<_Tile> {
     setState(() {});
   }
 
-  Future<void> _launchUrl() async {
+  Future<void> _onTap() async {
+    switch (widget.data.tapAction) {
+      case _LaunchUrl(url: final url):
+        await _launchUrl(url);
+      case _CopyToClipboard(text: final text):
+        await _copyToClipboard(text);
+    }
+  }
+
+  Future<void> _launchUrl(Uri url) async {
     final succeeded = await launchUrl(
-      widget.data.url,
+      url,
       webOnlyWindowName: '_blank',
     );
     if (!succeeded) {
-      throw Exception('Could not launch ${widget.data.url}');
+      throw Exception('Could not launch $url');
     }
+  }
+
+  Future<void> _copyToClipboard(String text) async {
+    await Clipboard.setData(ClipboardData(text: text));
   }
 
   void maybeUnfocus() {
@@ -256,7 +293,7 @@ class _TileState extends State<_Tile> {
         onTapOutside: (_) => maybeUnfocus(),
         child: ListTile(
           focusNode: widget.data.focusNode,
-          onTap: _launchUrl,
+          onTap: _onTap,
           leading: icon,
           title: Text(
             widget.data.title,
